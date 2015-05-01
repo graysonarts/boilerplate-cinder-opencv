@@ -27,3 +27,5 @@ LINK_DIRECTORIES(
     ${CMAKE_BINARY_DIR}/bin
     ${TBB_LIBRARY_DIRS}
 )
+
+add_subdirectory(code)
