@@ -9,15 +9,21 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/.git)
             OUTPUT_STRIP_TRAILING_WHITESPACE
         )
         MESSAGE(STATUS "Git Version: ${project_BUILD_VERSION}")
-    else()
-        SET(project_BUILD_VERSION 0)
     endif()
 endif()
 
-set(project_MAJOR_VERSION 0)
-set(project_MINOR_VERSION 0)
-set(project_PATCH_VERSION 0)
-set(project_VERSION
-    ${project_MAJOR_VERSION}.${project_MINOR_VERSION}.${project_PATCH_VERSION}-${project_BUILD_VERSION})
+function(SetProjectVersion VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
+    set(project_MAJOR_VERSION ${VERSION_MAJOR})
+    set(project_MINOR_VERSION ${VERSION_MINOR})
+    set(project_PATCH_VERSION ${VERSION_PATCH})
+    if(DEFINED project_BUILD_VERSION)
+        set(project_VERSION
+            ${project_MAJOR_VERSION}.${project_MINOR_VERSION}.${project_PATCH_VERSION}-${project_BUILD_VERSION})
+    else()
+        set(project_VERSION
+            ${project_MAJOR_VERSION}.${project_MINOR_VERSION}.${project_PATCH_VERSION})
+    endif()
 
-CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_BINARY_DIR}/bin/version.h @ONLY)
+    CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/version.h.in ${CMAKE_CURRENT_BINARY_DIR}/bin/version.h @ONLY)
+    message(STATUS "${PROJECT_NAME} v${project_VERSION}")
+endfunction()

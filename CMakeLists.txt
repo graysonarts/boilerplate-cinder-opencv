@@ -1,12 +1,14 @@
 cmake_minimum_required(VERSION 2.8)
-PROJECT (bodyProgress)
-
-set(Cinder_ROOT_DIR $ENV{CINDER_ROOT})
-set(CMAKE_MACOSX_RPATH 1)
+PROJECT (boilerplateCinderOpenCV)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
     "${CMAKE_SOURCE_DIR}/CMake/"
 )
+
 include("Version")
+SetProjectVersion(1 0 0)
+
+set(Cinder_ROOT_DIR $ENV{CINDER_ROOT})
+set(CMAKE_MACOSX_RPATH 1)
 set(RELEASE_PATH "body:Progress-${project_VERSION}")
 include_directories(
     ${CMAKE_BINARY_DIR}/bin
