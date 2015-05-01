@@ -4,12 +4,14 @@ PROJECT (bodyProgress)
 set(Cinder_ROOT_DIR $ENV{CINDER_ROOT})
 set(CMAKE_MACOSX_RPATH 1)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
-    "${CMAKE_SOURCE_DIR}/contrib/FindTBB/CMake/FindTBB/"
     "${CMAKE_SOURCE_DIR}/CMake/"
 )
 include("Version")
 set(RELEASE_PATH "body:Progress-${project_VERSION}")
-include_directories(${CMAKE_BINARY_DIR}/bin)
+include_directories(
+    ${CMAKE_BINARY_DIR}/bin
+    ${CMAKE_SOURCE_DIR}/include
+)
 
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})

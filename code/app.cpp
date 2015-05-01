@@ -1,44 +1,39 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include <list>
+#include "cinder/gl/Texture.h"
+
+#include "CinderOpenCV.h"
+
+#include <memory>
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
 // We'll create a new Cinder Application by deriving from the App class
-class BasicApp : public App {
+class BasicApp : public App
+{
 public:
-    void mouseDrag( MouseEvent event ) override;
-    void keyDown( KeyEvent event ) override;
+    void setup() override;
     void draw() override;
-    
-    // This will maintain a list of points which we will draw line segments between
-    list<vec2>              mPoints;
+    unique_ptr<cv::VideoCapture> m_capture;
+    cv::Mat m_frame;
+    gl::TextureRef m_texture;
 };
 
-void BasicApp::mouseDrag( MouseEvent event )
+void BasicApp::setup()
 {
-    mPoints.push_back( event.getPos() );
-}
-
-void BasicApp::keyDown( KeyEvent event )
-{
-    if( event.getChar() == 'f' )
-        setFullScreen( ! isFullScreen() );
+    m_capture.reset(new cv::VideoCapture(0));
 }
 
 void BasicApp::draw()
 {
+    *m_capture >> m_frame;
     gl::clear( Color( 0.1f, 0.1f, 0.15f ) );
+    m_texture = gl::Texture::create( fromOcv(m_frame) );
+    gl::draw( m_texture, vec2( 0, 0 ) );
     
-    gl::color( 1.0f, 0.5f, 0.25f );
-    gl::begin( GL_LINE_STRIP );
-    for( const vec2 &point : mPoints ) {
-        gl::vertex( point );
-    }
-    gl::end();
 }
 
 // This line tells Cinder to actually create the application
